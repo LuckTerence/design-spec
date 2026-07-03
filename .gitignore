@@ -1,0 +1,19 @@
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store
+
+# Generated outputs
+/DESIGN.md
+/DESIGN_*.md
+*_palette.svg
+*_tailwind.theme.json
+*_tokens.css
+*_tokens.json
+*_analysis.json
+page_design_tokens.png
+*_screenshot.png
+
+# Internal/project-only directories
+dev/
+.workbuddy/
