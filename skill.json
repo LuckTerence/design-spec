@@ -1,0 +1,36 @@
+{
+  "name": "design-spec",
+  "displayName": "Design Spec Generator",
+  "version": "1.0.0",
+  "description": "根据品牌/产品描述自动生成 DESIGN.md 设计规范文档。离线、隐私友好的文本→DESIGN.md 生成引擎，内置 12 行业模板与 25+ 组件目录，颜色/截图复用 coloraide 与 colorthief 等成熟开源轮子。",
+  "author": "LuckTerence",
+  "homepage": "https://github.com/LuckTerence/design-spec",
+  "license": "Apache-2.0",
+  "icon": "assets/icon.svg",
+  "category": "design",
+  "triggers": [
+    "生成设计规范",
+    "设计系统",
+    "品牌规范",
+    "DESIGN.md",
+    "设计令牌",
+    "Design Tokens",
+    "Design System",
+    "生成 Design Spec"
+  ],
+  "tags": [
+    "design",
+    "design-system",
+    "design-tokens",
+    "brand",
+    "color",
+    "despec"
+  ],
+  "engine": "python",
+  "entry": "scripts/generate_design_spec.py",
+  "dependencies": [
+    "coloraide==8.10.0",
+    "pillow==12.3.0",
+    "colorthief==0.2.1"
+  ]
+}

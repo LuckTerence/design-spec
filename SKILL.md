@@ -1,6 +1,18 @@
 ---
 name: design-spec
 description: "根据品牌/产品描述自动生成 DESIGN.md 设计规范文档。当用户提到'生成设计规范'、'设计系统'、'品牌规范'、'DESIGN.md'、'设计令牌'、'Design Tokens'、'Design System'、'生成 Design Spec'时使用。不要用于需要手动设计或已有完整设计稿的场景。"
+agent_created: true
+version: 1.0.0
+author: LuckTerence
+homepage: https://github.com/LuckTerence/design-spec
+license: Apache-2.0
+tags:
+  - design
+  - design-system
+  - design-tokens
+  - brand
+  - color
+  - despec
 ---
 
 ## 干什么的
