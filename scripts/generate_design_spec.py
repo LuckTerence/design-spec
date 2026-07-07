@@ -40,9 +40,35 @@ ANALYSIS_SCRIPT = os.path.join(os.path.dirname(__file__), "analyze_screenshot.py
 
 VALID_TONES = ["专业", "活泼", "极简", "科技", "优雅"]
 VALID_TEMPLATES = [
+    # 原 12 个
     "enterprise", "ecommerce", "finance", "creative",
     "healthcare", "education", "gaming", "food-beverage",
     "real-estate", "travel", "social-media", "developer-tools",
+    # 新增 38+ 个
+    # AI / SaaS 细分
+    "ai-assistant", "saas-analytics", "crm", "devops",
+    "nocode", "cybersecurity", "cloud-infra",
+    # 区块链 / Web3
+    "blockchain", "crypto-wallet", "nft-marketplace", "defi",
+    # 媒体 / 内容
+    "streaming", "podcast", "news-portal", "blog-platform",
+    "photography", "animation-studio",
+    # 健身 / 健康
+    "fitness", "wellness", "meditation",
+    # 美容 / 时尚
+    "beauty", "cosmetics", "fashion",
+    # 法律 / 政务
+    "legal", "government", "nonprofit",
+    # 教育细分
+    "k12-education", "corporate-training", "language-learning",
+    # 房地产细分
+    "commercial-real-estate", "interior-design",
+    # 物流 / 制造
+    "logistics", "manufacturing", "agriculture", "energy",
+    # 专业服务
+    "consulting", "hr-recruiting", "event-management",
+    # 娱乐 / 生活方式
+    "dating", "pet-care", "parenting", "music-production",
 ]
 
 DEFAULT_PRIMARY = "#1A73E8"
@@ -270,126 +296,429 @@ def auto_text_color(bg_color: str) -> str:
 # P1-2: 模板预设
 # ═══════════════════════════════════════════════════════════════
 
-TEMPLATES = {
+TEMPLATES: Dict[str, dict] = {
+    # ═══════════════════════════════════════
+    # 原 12 个模板（保持兼容）
+    # ═══════════════════════════════════════
     "enterprise": {
-        "name": "Enterprise",
-        "primary": "#1A73E8",
-        "secondary": "#34A853",
-        "background": "#FFFFFF",
-        "text": "#1A1C1E",
-        "font": DEFAULT_FONT,
+        "name": "Enterprise", "primary": "#1A73E8", "secondary": "#34A853",
+        "background": "#FFFFFF", "text": "#1A1C1E", "font": DEFAULT_FONT,
         "tone": "专业",
         "desc": "面向企业级 SaaS 与 B2B 产品的专业设计系统",
+        "anti_patterns": ["避免使用过于鲜艳的强调色", "不要使用圆润的卡通风格"],
     },
     "ecommerce": {
-        "name": "E-Commerce",
-        "primary": "#C2185B",
-        "secondary": "#FF9800",
-        "background": "#FFFFFF",
-        "text": "#212121",
-        "font": DEFAULT_CJK_FONT,
+        "name": "E-Commerce", "primary": "#C2185B", "secondary": "#FF9800",
+        "background": "#FFFFFF", "text": "#212121", "font": DEFAULT_CJK_FONT,
         "tone": "活泼",
         "desc": "面向电商促销与营销页面的视觉冲击力设计系统",
+        "anti_patterns": ["避免信息密度过低", "促销标签不要使用接近主色的色调"],
     },
     "finance": {
-        "name": "Finance",
-        "primary": "#0A753D",
-        "secondary": "#1565C0",
-        "background": "#F8F9FA",
-        "text": "#1A1C1E",
+        "name": "Finance", "primary": "#0A753D", "secondary": "#1565C0",
+        "background": "#F8F9FA", "text": "#1A1C1E",
         "font": "'SF Pro Text', Inter, system-ui, sans-serif",
         "tone": "专业",
         "desc": "面向银行、理财、支付场景的稳健可信设计系统",
+        "anti_patterns": ["避免使用紫色/粉色渐变", "不要使用过多圆角保持严肃感"],
     },
     "creative": {
-        "name": "Creative",
-        "primary": "#9C27B0",
-        "secondary": "#FF5722",
-        "background": "#0D0D0D",
-        "text": "#E8EAED",
+        "name": "Creative", "primary": "#9C27B0", "secondary": "#FF5722",
+        "background": "#0D0D0D", "text": "#E8EAED",
         "font": "'GT America', Inter, system-ui, sans-serif",
         "tone": "科技",
         "desc": "面向娱乐、短视频、内容创作的潮流设计系统",
+        "anti_patterns": ["避免使用低对比度的柔和色", "不要让文字可读性让步于视觉效果"],
     },
     "healthcare": {
-        "name": "Healthcare",
-        "primary": "#0E7490",
-        "secondary": "#06B6D4",
-        "background": "#F0FDFA",
-        "text": "#0F172A",
-        "font": DEFAULT_FONT,
+        "name": "Healthcare", "primary": "#0E7490", "secondary": "#06B6D4",
+        "background": "#F0FDFA", "text": "#0F172A", "font": DEFAULT_FONT,
         "tone": "专业",
         "desc": "面向医疗健康、在线问诊、药房管理的安心设计系统",
+        "anti_patterns": ["避免红色为主色（易与紧急/错误混淆）", "保持高对比度确保可读性"],
     },
     "education": {
-        "name": "Education",
-        "primary": "#EA580C",
-        "secondary": "#F59E0B",
-        "background": "#FFFBEB",
-        "text": "#1E293B",
-        "font": DEFAULT_CJK_FONT,
+        "name": "Education", "primary": "#EA580C", "secondary": "#F59E0B",
+        "background": "#FFFBEB", "text": "#1E293B", "font": DEFAULT_CJK_FONT,
         "tone": "活泼",
         "desc": "面向在线教育、知识付费、学习平台的温暖设计系统",
+        "anti_patterns": ["避免冷色调作为主色", "不要使用过于紧凑的排版"],
     },
     "gaming": {
-        "name": "Gaming",
-        "primary": "#7C3AED",
-        "secondary": "#F43F5E",
-        "background": "#0F0F23",
-        "text": "#E2E8F0",
+        "name": "Gaming", "primary": "#7C3AED", "secondary": "#F43F5E",
+        "background": "#0F0F23", "text": "#E2E8F0",
         "font": "'Inter', 'Manrope', system-ui, sans-serif",
         "tone": "科技",
         "desc": "面向游戏平台、电竞社区、互动娱乐的沉浸设计系统",
+        "anti_patterns": ["避免低饱和度配色", "不要在深色背景上使用深紫色文字"],
     },
     "food-beverage": {
-        "name": "Food & Beverage",
-        "primary": "#DC2626",
-        "secondary": "#F97316",
-        "background": "#FFF7ED",
-        "text": "#292524",
-        "font": DEFAULT_CJK_FONT,
+        "name": "Food & Beverage", "primary": "#DC2626", "secondary": "#F97316",
+        "background": "#FFF7ED", "text": "#292524", "font": DEFAULT_CJK_FONT,
         "tone": "活泼",
         "desc": "面向餐饮外卖、食谱分享、食品品牌的食欲感设计系统",
+        "anti_patterns": ["避免蓝色作为主色（抑制食欲）", "不要使用过小的字体展示菜单"],
     },
     "real-estate": {
-        "name": "Real Estate",
-        "primary": "#166534",
-        "secondary": "#CA8A04",
-        "background": "#F8FAFC",
-        "text": "#0F172A",
-        "font": DEFAULT_FONT,
+        "name": "Real Estate", "primary": "#166534", "secondary": "#CA8A04",
+        "background": "#F8FAFC", "text": "#0F172A", "font": DEFAULT_FONT,
         "tone": "优雅",
         "desc": "面向房产展示、物业管理的稳健可靠设计系统",
+        "anti_patterns": ["避免过于花哨的渐变和装饰", "不要使用刺眼的亮色作为背景"],
     },
     "travel": {
-        "name": "Travel",
-        "primary": "#0284C7",
-        "secondary": "#0EA5E9",
-        "background": "#F0F9FF",
-        "text": "#0F172A",
-        "font": DEFAULT_FONT,
+        "name": "Travel", "primary": "#0284C7", "secondary": "#0EA5E9",
+        "background": "#F0F9FF", "text": "#0F172A", "font": DEFAULT_FONT,
         "tone": "活泼",
         "desc": "面向旅游出行、酒店预订的自由感设计系统",
+        "anti_patterns": ["避免暗色调为主", "不要在目的地卡片上使用低对比度文字"],
     },
     "social-media": {
-        "name": "Social Media",
-        "primary": "#EC4899",
-        "secondary": "#8B5CF6",
-        "background": "#FAFAFA",
-        "text": "#18181B",
-        "font": DEFAULT_FONT,
+        "name": "Social Media", "primary": "#EC4899", "secondary": "#8B5CF6",
+        "background": "#FAFAFA", "text": "#18181B", "font": DEFAULT_FONT,
         "tone": "活泼",
         "desc": "面向社交平台、社区论坛、内容分享的活力设计系统",
+        "anti_patterns": ["避免过于正式的排版风格", "不要让操作按钮太小不易点击"],
     },
     "developer-tools": {
-        "name": "Developer Tools",
-        "primary": "#0F766E",
-        "secondary": "#6366F1",
-        "background": "#0A0A0A",
-        "text": "#E4E4E7",
+        "name": "Developer Tools", "primary": "#0F766E", "secondary": "#6366F1",
+        "background": "#0A0A0A", "text": "#E4E4E7",
         "font": "'JetBrains Mono', 'SF Mono', 'Fira Code', monospace",
         "tone": "科技",
         "desc": "面向开发者工具、API 文档、技术产品的极客设计系统",
+        "anti_patterns": ["避免低信息密度布局", "不要在深色背景上使用灰色文字"],
+    },
+    # ═══════════════════════════════════════
+    # 新增 38 个模板
+    # ═══════════════════════════════════════
+    "ai-assistant": {
+        "name": "AI Assistant", "primary": "#6366F1", "secondary": "#A855F7",
+        "background": "#FFFFFF", "text": "#1E293B",
+        "font": "'SF Pro', Inter, system-ui, sans-serif",
+        "tone": "科技",
+        "desc": "面向 AI 对话助手、Copilot 产品的智能设计系统",
+        "anti_patterns": ["避免机器人感的冰冷配色", "不要让 AI 输出的区域与用户输入区域视觉混淆"],
+    },
+    "saas-analytics": {
+        "name": "SaaS Analytics", "primary": "#2563EB", "secondary": "#7C3AED",
+        "background": "#F8FAFC", "text": "#0F172A", "font": DEFAULT_FONT,
+        "tone": "科技",
+        "desc": "面向数据分析、商业智能仪表盘的数据密集型设计系统",
+        "anti_patterns": ["避免过多颜色导致图表喧宾夺主", "不要让数据标签字号小于 12px"],
+    },
+    "crm": {
+        "name": "CRM", "primary": "#0891B2", "secondary": "#0284C7",
+        "background": "#FFFFFF", "text": "#1E293B", "font": DEFAULT_FONT,
+        "tone": "专业",
+        "desc": "面向客户关系管理、销售追踪的务实设计系统",
+        "anti_patterns": ["避免过于休闲的配色", "不要让表格行高过小影响可读性"],
+    },
+    "devops": {
+        "name": "DevOps", "primary": "#2563EB", "secondary": "#059669",
+        "background": "#0F172A", "text": "#E2E8F0",
+        "font": "'SF Mono', 'JetBrains Mono', monospace",
+        "tone": "科技",
+        "desc": "面向 CI/CD、监控告警、基础设施的运维设计系统",
+        "anti_patterns": ["避免使用浅色作为背景", "状态指示色必须满足 WCAG AA"],
+    },
+    "nocode": {
+        "name": "No-Code", "primary": "#E11D48", "secondary": "#F97316",
+        "background": "#FFFFFF", "text": "#18181B",
+        "font": "'Inter', 'DM Sans', system-ui, sans-serif",
+        "tone": "活泼",
+        "desc": "面向无代码平台、自动化工具的用户友好设计系统",
+        "anti_patterns": ["避免技术感太强（如终端风格）", "不要让拖拽区域视觉上难以识别"],
+    },
+    "cybersecurity": {
+        "name": "Cybersecurity", "primary": "#059669", "secondary": "#0284C7",
+        "background": "#0C0A09", "text": "#E7E5E4",
+        "font": "'Inter', system-ui, sans-serif",
+        "tone": "科技",
+        "desc": "面向安全监控、威胁检测的警惕感设计系统",
+        "anti_patterns": ["避免使用过于明亮的色彩作为背景", "危险告警色必须使用红色系"],
+    },
+    "cloud-infra": {
+        "name": "Cloud Infrastructure", "primary": "#2563EB", "secondary": "#D97706",
+        "background": "#FAFAFA", "text": "#171717",
+        "font": DEFAULT_FONT,
+        "tone": "专业",
+        "desc": "面向云服务控制台、资源管理的效率设计系统",
+        "anti_patterns": ["避免信息密度过低", "不要让状态图标使用相近色"],
+    },
+    "blockchain": {
+        "name": "Blockchain", "primary": "#F59E0B", "secondary": "#6366F1",
+        "background": "#0A0A0A", "text": "#E5E7EB",
+        "font": "'Inter', 'Space Grotesk', system-ui, sans-serif",
+        "tone": "科技",
+        "desc": "面向区块链浏览器、去中心化应用的未来感设计系统",
+        "anti_patterns": ["避免使用政府/银行风格的蓝色", "不要使用过多渐变"],
+    },
+    "crypto-wallet": {
+        "name": "Crypto Wallet", "primary": "#8B5CF6", "secondary": "#06B6D4",
+        "background": "#09090B", "text": "#E4E4E7",
+        "font": "'Inter', system-ui, sans-serif",
+        "tone": "科技",
+        "desc": "面向加密货币钱包、DeFi 面板的安全设计系统",
+        "anti_patterns": ["避免使用过于明亮的文字色", "资产数字必须使用等宽字体"],
+    },
+    "nft-marketplace": {
+        "name": "NFT Marketplace", "primary": "#EC4899", "secondary": "#06B6D4",
+        "background": "#0F0F0F", "text": "#E2E8F0",
+        "font": "'Space Grotesk', Inter, system-ui, sans-serif",
+        "tone": "极简",
+        "desc": "面向 NFT 交易市场、数字藏品展示的沉浸设计系统",
+        "anti_patterns": ["避免过多颜色冲突", "不要让卡片间距过小"],
+    },
+    "defi": {
+        "name": "DeFi", "primary": "#10B981", "secondary": "#3B82F6",
+        "background": "#0A0A0A", "text": "#FAFAFA",
+        "font": "'Inter', system-ui, sans-serif",
+        "tone": "科技",
+        "desc": "面向去中心化金融、流动性挖矿的数据设计系统",
+        "anti_patterns": ["避免过于装饰性的视觉元素", "涨跌色必须符合各自市场惯例"],
+    },
+    "streaming": {
+        "name": "Streaming", "primary": "#E50914", "secondary": "#000000",
+        "background": "#141414", "text": "#FFFFFF",
+        "font": "'Inter', system-ui, sans-serif",
+        "tone": "极简",
+        "desc": "面向视频流媒体、直播平台的沉浸观看设计系统",
+        "anti_patterns": ["避免在视频缩略图上叠加亮色 UI", "不要让控制栏自动隐藏过慢"],
+    },
+    "podcast": {
+        "name": "Podcast", "primary": "#7C3AED", "secondary": "#10B981",
+        "background": "#FAFAFA", "text": "#1C1917",
+        "font": "'Inter', system-ui, sans-serif",
+        "tone": "优雅",
+        "desc": "面向播客平台、音频内容的温暖设计系统",
+        "anti_patterns": ["避免冷色作为主色", "不要让播放进度条过于纤细"],
+    },
+    "news-portal": {
+        "name": "News Portal", "primary": "#1E293B", "secondary": "#DC2626",
+        "background": "#FFFFFF", "text": "#111827",
+        "font": "'PT Serif', 'Noto Serif SC', Georgia, serif",
+        "tone": "专业",
+        "desc": "面向新闻门户、媒体网站的可信设计系统",
+        "anti_patterns": ["避免过度装饰和动画", "正文不要使用小于 16px 的字号"],
+    },
+    "blog-platform": {
+        "name": "Blog Platform", "primary": "#292524", "secondary": "#D97706",
+        "background": "#FCFCFC", "text": "#1C1917",
+        "font": "'Noto Serif', Georgia, 'Times New Roman', serif",
+        "tone": "优雅",
+        "desc": "面向博客、个人写作的文字友好设计系统",
+        "anti_patterns": ["避免过于花哨的界面元素", "不要让正文行宽超过 720px"],
+    },
+    "photography": {
+        "name": "Photography", "primary": "#1A1A1A", "secondary": "#FAFAFA",
+        "background": "#000000", "text": "#F5F5F5",
+        "font": "'Inter', system-ui, sans-serif",
+        "tone": "极简",
+        "desc": "面向摄影作品集、画廊展示的无干扰设计系统",
+        "anti_patterns": ["避免在照片上叠加颜色", "不要让 UI 元素遮盖画面主体"],
+    },
+    "animation-studio": {
+        "name": "Animation Studio", "primary": "#6366F1", "secondary": "#22D3EE",
+        "background": "#0A0A0A", "text": "#E2E8F0",
+        "font": "'DM Sans', Inter, system-ui, sans-serif",
+        "tone": "活泼",
+        "desc": "面向动画工作室、动态设计的创意设计系统",
+        "anti_patterns": ["避免静态感过强的设计", "不要让过渡动画时间超过 500ms"],
+    },
+    "fitness": {
+        "name": "Fitness", "primary": "#EA580C", "secondary": "#22C55E",
+        "background": "#FAFAFA", "text": "#1C1917",
+        "font": "'Inter', system-ui, sans-serif",
+        "tone": "活泼",
+        "desc": "面向健身追踪、运动训练的激励设计系统",
+        "anti_patterns": ["避免使用冷色作为主色", "不要让数字显示小于 24px"],
+    },
+    "wellness": {
+        "name": "Wellness", "primary": "#06B6D4", "secondary": "#A3E635",
+        "background": "#F0F9FF", "text": "#0F172A",
+        "font": "'Inter', system-ui, sans-serif",
+        "tone": "优雅",
+        "desc": "面向健康管理、生活方式的舒缓设计系统",
+        "anti_patterns": ["避免高对比度的颜色碰撞", "不要让动画过于急促"],
+    },
+    "meditation": {
+        "name": "Meditation", "primary": "#8B5CF6", "secondary": "#A78BFA",
+        "background": "#0F0A1E", "text": "#E9DFF5",
+        "font": "'Inter', 'Noto Sans SC', system-ui, sans-serif",
+        "tone": "极简",
+        "desc": "面向冥想、正念应用的宁静设计系统",
+        "anti_patterns": ["避免使用警示色（红/橙）", "不要让界面产生视觉紧迫感"],
+    },
+    "beauty": {
+        "name": "Beauty", "primary": "#DB2777", "secondary": "#F472B6",
+        "background": "#FFF1F2", "text": "#1F2937",
+        "font": "'Playfair Display', 'Noto Serif SC', Georgia, serif",
+        "tone": "优雅",
+        "desc": "面向美妆护肤、个护品牌的精致设计系统",
+        "anti_patterns": ["避免暗色调为主", "不要让产品图片被文字遮挡"],
+    },
+    "cosmetics": {
+        "name": "Cosmetics", "primary": "#E11D48", "secondary": "#FDA4AF",
+        "background": "#FFFFFF", "text": "#1E293B",
+        "font": "'Inter', system-ui, sans-serif",
+        "tone": "活泼",
+        "desc": "面向化妆品、香水品牌的奢华设计系统",
+        "anti_patterns": ["避免粗糙的纹理背景", "不要让价格标签过于显眼破坏高级感"],
+    },
+    "fashion": {
+        "name": "Fashion", "primary": "#18181B", "secondary": "#F59E0B",
+        "background": "#FAFAFA", "text": "#18181B",
+        "font": "'Bodoni Moda', 'Noto Serif SC', Georgia, serif",
+        "tone": "优雅",
+        "desc": "面向时尚电商、穿搭平台的高级感设计系统",
+        "anti_patterns": ["避免使用过多颜色", "不要让 UI 界面比服装图片更引人注目"],
+    },
+    "legal": {
+        "name": "Legal", "primary": "#1E3A5F", "secondary": "#8B4513",
+        "background": "#FDFBF7", "text": "#1A1A1A",
+        "font": "'Inter', system-ui, sans-serif",
+        "tone": "专业",
+        "desc": "面向律师事务所、法务管理的庄重设计系统",
+        "anti_patterns": ["避免使用彩色渐变", "不要使用非衬线字体做正文"],
+    },
+    "government": {
+        "name": "Government", "primary": "#1B4332", "secondary": "#4A5568",
+        "background": "#F8F9FA", "text": "#1A202C",
+        "font": "'Inter', system-ui, sans-serif",
+        "tone": "专业",
+        "desc": "面向政务平台、公共服务的高可信设计系统",
+        "anti_patterns": ["避免使用蓝色系作为强调色（与链接混淆）", "不要使用装饰性图形"],
+    },
+    "nonprofit": {
+        "name": "Nonprofit", "primary": "#059669", "secondary": "#0EA5E9",
+        "background": "#FFFFFF", "text": "#1E293B",
+        "font": "'Inter', system-ui, sans-serif",
+        "tone": "优雅",
+        "desc": "面向非营利组织、公益捐款的温暖设计系统",
+        "anti_patterns": ["避免奢华感的设计元素", "不要让捐款按钮使用冷色调"],
+    },
+    "k12-education": {
+        "name": "K-12 Education", "primary": "#F59E0B", "secondary": "#3B82F6",
+        "background": "#FFFBEB", "text": "#1E293B", "font": DEFAULT_CJK_FONT,
+        "tone": "活泼",
+        "desc": "面向 K12 教育、少儿编程的友好设计系统",
+        "anti_patterns": ["避免过于成熟的商务感", "不要让文字字号小于 16px"],
+    },
+    "corporate-training": {
+        "name": "Corporate Training", "primary": "#6366F1", "secondary": "#22D3EE",
+        "background": "#F8FAFC", "text": "#0F172A", "font": DEFAULT_FONT,
+        "tone": "科技",
+        "desc": "面向企业培训、员工发展的效率设计系统",
+        "anti_patterns": ["避免过于幼稚的卡通风格", "不要让课程卡片信息密度过低"],
+    },
+    "language-learning": {
+        "name": "Language Learning", "primary": "#10B981", "secondary": "#6366F1",
+        "background": "#FFFFFF", "text": "#1E293B",
+        "font": "'Inter', 'Noto Sans SC', system-ui, sans-serif",
+        "tone": "活泼",
+        "desc": "面向语言学习、翻译工具的教育设计系统",
+        "anti_patterns": ["避免使用红色作为纠错色外的强调色", "不要让生词卡片过大超出视图"],
+    },
+    "commercial-real-estate": {
+        "name": "Commercial RE", "primary": "#92400E", "secondary": "#15803D",
+        "background": "#FFFBEB", "text": "#1F2937", "font": DEFAULT_FONT,
+        "tone": "专业",
+        "desc": "面向商业地产投资、租赁的专业设计系统",
+        "anti_patterns": ["避免过于花哨的装饰", "不要让数据表格过于紧凑"],
+    },
+    "interior-design": {
+        "name": "Interior Design", "primary": "#D97706", "secondary": "#78716C",
+        "background": "#FAFAF9", "text": "#1C1917",
+        "font": "'Playfair Display', 'Noto Serif SC', serif",
+        "tone": "优雅",
+        "desc": "面向室内设计、家具展示的审美设计系统",
+        "anti_patterns": ["避免过于鲜艳的颜色", "不要让 UI 界面比设计作品本身更引人注目"],
+    },
+    "logistics": {
+        "name": "Logistics", "primary": "#2563EB", "secondary": "#D97706",
+        "background": "#F8FAFC", "text": "#1E293B", "font": DEFAULT_FONT,
+        "tone": "专业",
+        "desc": "面向物流追踪、仓储管理的操作型设计系统",
+        "anti_patterns": ["避免使用大面积的浅色背景", "不要让状态标签使用相近色"],
+    },
+    "manufacturing": {
+        "name": "Manufacturing", "primary": "#475569", "secondary": "#2563EB",
+        "background": "#F1F5F9", "text": "#0F172A",
+        "font": "'Inter', system-ui, sans-serif",
+        "tone": "专业",
+        "desc": "面向制造业 MES、工业 IoT 的工业设计系统",
+        "anti_patterns": ["避免使用过于柔和的配色", "告警颜色必须符合工业安全标准"],
+    },
+    "agriculture": {
+        "name": "Agriculture", "primary": "#15803D", "secondary": "#65A30D",
+        "background": "#F7FEE7", "text": "#1A2E05",
+        "font": DEFAULT_FONT,
+        "tone": "优雅",
+        "desc": "面向农业科技、智慧农场的大地色设计系统",
+        "anti_patterns": ["避免使用城市感的蓝色/灰色", "不要使用过于细小的字体"],
+    },
+    "energy": {
+        "name": "Energy", "primary": "#059669", "secondary": "#D97706",
+        "background": "#ECFDF5", "text": "#064E3B",
+        "font": "'Inter', system-ui, sans-serif",
+        "tone": "科技",
+        "desc": "面向能源管理、碳中和的绿色设计系统",
+        "anti_patterns": ["避免使用工业灰色调", "不要让绿色色阶过于单一"],
+    },
+    "consulting": {
+        "name": "Consulting", "primary": "#1E3A5F", "secondary": "#D4AF37",
+        "background": "#FFFFFF", "text": "#1E293B",
+        "font": "'Inter', system-ui, sans-serif",
+        "tone": "专业",
+        "desc": "面向管理咨询、战略服务的权威设计系统",
+        "anti_patterns": ["避免过于休闲的设计元素", "不要让信息呈现层级混乱"],
+    },
+    "hr-recruiting": {
+        "name": "HR & Recruiting", "primary": "#6366F1", "secondary": "#22D3EE",
+        "background": "#FFFFFF", "text": "#1E293B", "font": DEFAULT_FONT,
+        "tone": "专业",
+        "desc": "面向人力资源、招聘平台的专业设计系统",
+        "anti_patterns": ["避免使用过于冰冷的色调", "不要让职位卡片信息过少"],
+    },
+    "event-management": {
+        "name": "Event Management", "primary": "#E11D48", "secondary": "#F59E0B",
+        "background": "#FFF1F2", "text": "#1E293B",
+        "font": "'Inter', 'DM Sans', system-ui, sans-serif",
+        "tone": "活泼",
+        "desc": "面向活动策划、票务管理的活力设计系统",
+        "anti_patterns": ["避免信息层级混乱", "不要让倒计时组件尺寸过小"],
+    },
+    "dating": {
+        "name": "Dating", "primary": "#EC4899", "secondary": "#8B5CF6",
+        "background": "#FFF0F5", "text": "#1F2937",
+        "font": "'Inter', 'DM Sans', system-ui, sans-serif",
+        "tone": "活泼",
+        "desc": "面向社交约会、交友平台的浪漫设计系统",
+        "anti_patterns": ["避免使用冷淡的灰蓝色", "不要让用户头像尺寸过小"],
+    },
+    "pet-care": {
+        "name": "Pet Care", "primary": "#F97316", "secondary": "#22C55E",
+        "background": "#FFF7ED", "text": "#431407",
+        "font": "'Inter', system-ui, sans-serif",
+        "tone": "活泼",
+        "desc": "面向宠物服务、宠物商店的温馨设计系统",
+        "anti_patterns": ["避免使用冷色调", "不要让文字过于严肃正式"],
+    },
+    "parenting": {
+        "name": "Parenting", "primary": "#06B6D4", "secondary": "#F472B6",
+        "background": "#ECFEFF", "text": "#164E63",
+        "font": "'Nunito', 'Noto Sans SC', system-ui, sans-serif",
+        "tone": "活泼",
+        "desc": "面向亲子育儿、儿童成长的柔软设计系统",
+        "anti_patterns": ["避免使用锐利的角落", "不要让文字字号小于 14px"],
+    },
+    "music-production": {
+        "name": "Music Production", "primary": "#A855F7", "secondary": "#EC4899",
+        "background": "#0A0A0A", "text": "#E2E8F0",
+        "font": "'Inter', system-ui, sans-serif",
+        "tone": "科技",
+        "desc": "面向音乐制作、音频编辑的创意设计系统",
+        "anti_patterns": ["避免静物感强的灰度配色", "不要让轨道面板的可读性降低"],
     },
 }
 
@@ -1020,6 +1349,18 @@ sm 级阴影，surface 色背景，16px 圆角，24px 内边距。hover 升至 m
 - 不要在卡片上叠加阴影再叠加阴影——嵌套元素不应自带入额外的阴影层级
 - 不要为文字内容随意指定字号——必须从字体层级中选择
 """)
+    ap_name = getattr(args, "template", "") or ""
+    if ap_name and ap_name in TEMPLATES:
+        anti = TEMPLATES[ap_name].get("anti_patterns", [])
+        if anti:
+            sections[-1] = sections[-1].rstrip() + """
+
+### 行业反模式 — %s
+
+""" % TEMPLATES[ap_name]["name"]
+            for i, a in enumerate(anti, 1):
+                sections[-1] += "- ❌ %s\n" % a
+            sections[-1] += "\n"
 
     return "\n\n".join(sections)
 
@@ -1602,12 +1943,325 @@ Examples:
 
     parser.add_argument("--diff", nargs=2, default=None,
                         help="比较两个 DESIGN.md 文件的 token 级差异")
+
+    parser.add_argument("--audit", nargs=2, default=None, metavar=("DESIGN.md", "SRC_DIR"),
+                        help="审计源码目录中的颜色字面量是否偏离 DESIGN.md 规范（参考 no7z/design-pact）")
+
+    parser.add_argument("--import-local", default="", metavar="PROJECT_DIR",
+                        help="从本地项目目录提取设计令牌，自动推导 DESIGN.md 草稿（扫描 CSS 变量、tailwind.config、颜色使用模式）")
+
+    parser.add_argument("--master", default="", metavar="DESIGN.md",
+                        help="Master DESIGN.md 路径（作为全局规范的基础，配合 --page 使用）")
+
+    parser.add_argument("--page", default="", metavar="PAGE_NAME",
+                        help="页面名称（与 --master 配合：加载 Master 全局规范后应用页面级别的颜色覆盖）")
     return parser
 
 
 def _insert_suffix(path: str, suffix: str) -> str:
     p = Path(path)
     return str(p.with_name(f"{p.stem}{suffix}{p.suffix}"))
+
+
+# 扩展的源文件扩展名（审计时扫描的文件类型）
+_AUDIT_EXTS = {".css", ".html", ".jsx", ".tsx", ".vue", ".svelte",
+               ".scss", ".less", ".styl", ".js", ".ts", ".py",
+               ".json", ".yaml", ".yml", ".md", ".xml", ".svg", ".astro"}
+_AUDIT_SKIP_DIRS = {"node_modules", ".git", "__pycache__", "dist", "build",
+                    ".next", ".nuxt", ".workbuddy", ".venv", "venv",
+                    ".pytest_cache", ".coverage", "htmlcov"}
+# 已知第三方库/框架的常见颜色字面量，审计时忽略
+_AUDIT_IGNORE_COLORS = {
+    "#000000", "#ffffff", "#000", "#fff",
+    "#ff0000", "#00ff00", "#0000ff",
+    "#f00", "#0f0", "#00f",
+    "#ff0", "#f0f", "#0ff",
+    "#ffff00", "#ff00ff", "#00ffff",
+}
+
+
+def _collect_design_md_colors(design_path: str) -> tuple[set[str], set[str]]:
+    """解析 DESIGN.md 的 colors 块，返回（所有颜色值集合, 颜色键集合）。"""
+    try:
+        text = Path(design_path).read_text(encoding="utf-8")
+    except OSError as e:
+        print(f"错误：无法读取 DESIGN.md — {e}")
+        return set(), set()
+    m = re.match(r'^---\s*\n(.*?)\n---', text, re.DOTALL)
+    if not m:
+        print(f"错误：{design_path} 没有 YAML frontmatter")
+        return set(), set()
+    fm = m.group(1)
+    colors_block = re.search(r'^colors:\n(.*?)(?=^\w|\Z)', fm, re.MULTILINE | re.DOTALL)
+    if not colors_block:
+        print(f"错误：{design_path} 的 colors 块未找到")
+        return set(), set()
+    allowed = set()
+    keys = set()
+    for line in colors_block.group(1).splitlines():
+        mm = re.match(r'^\s+([\w-]+):\s*"([^"]+)"', line)
+        if mm:
+            keys.add(mm.group(1))
+            try:
+                allowed.add(normalize_to_hex(mm.group(2)))
+            except ValueError:
+                pass
+    return allowed, keys
+
+
+_COLOR_RE = re.compile(
+    r'#(?:[0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{3,4})'
+    r'|rgba?\(\s*\d+\s*,\s*\d+\s*,\s*\d+(?:\s*,\s*[\d.]+)?\s*\)'
+    r'|hsla?\(\s*[\d.]+\s*,\s*[\d.]+%\s*,\s*[\d.]+%(?:\s*,\s*[\d.]+)?\s*\)'
+)
+
+
+def _extract_colors_from_text(text: str) -> list[str]:
+    """从文本中提取所有 CSS 颜色字面量并归一化为 6 位 hex。"""
+    found = set()
+    for m in _COLOR_RE.finditer(text):
+        raw = m.group(0).strip()
+        if raw.lower() in _AUDIT_IGNORE_COLORS:
+            continue
+        try:
+            found.add(normalize_to_hex(raw))
+        except ValueError:
+            found.add(raw.lower())
+    return sorted(found)
+
+
+def _run_import_local(project_dir: str, output: str) -> int:
+    """扫描本地项目目录，自动推导 DESIGN.md 草稿。
+
+    从 CSS 变量、tailwind.config、颜色使用频率推断设计令牌。
+    参考：no7z/design-pact 的 import 命令 / Easy-Hexford local mode。
+    """
+    src = Path(project_dir).resolve()
+    if not src.is_dir():
+        print(f"错误：项目目录不存在 — {project_dir}")
+        return 1
+
+    print(f"🔍 扫描本地项目: {src}")
+
+    # ── 收集颜色使用频率 ──
+    color_freq: dict[str, int] = {}  # hex -> count
+    css_vars: dict[str, str] = {}     # --var-name -> value
+    fonts_found: set[str] = set()
+    tailwind_config = None
+
+    for fpath in src.rglob("*"):
+        if any(part.startswith(".") for part in fpath.parts):
+            continue
+        if any(part in _AUDIT_SKIP_DIRS for part in fpath.parts):
+            continue
+        if not fpath.is_file():
+            continue
+
+        suffix = fpath.suffix.lower()
+        try:
+            text = fpath.read_text(encoding="utf-8", errors="replace")
+        except (OSError, UnicodeDecodeError):
+            continue
+
+        # CSS 变量提取
+        if suffix in {".css", ".scss", ".less", ".styl"}:
+            for m in re.finditer(r'--([\w-]+)\s*:\s*([^;]+?)\s*(?:!important)?\s*;', text):
+                name, val = m.group(1).strip(), m.group(2).strip()
+                if val.startswith("#") or val.startswith("rgb") or val.startswith("hsl"):
+                    css_vars[f"--{name}"] = val
+                # 也提取 font-family 变量
+                if "font" in name.lower():
+                    css_vars[f"--{name}"] = val
+
+        # Tailwind 配置检测
+        if fpath.name in ("tailwind.config.js", "tailwind.config.ts",
+                          "tailwind.config.mjs", "tailwind.config.cjs"):
+            for m in re.finditer(r"colors\s*:\s*\{([^}]+)\}", text, re.DOTALL):
+                colors_block = m.group(1)
+                for cm in re.finditer(r"([\w-]+)\s*:\s*['\"]?(#[0-9a-fA-F]+)", colors_block):
+                    css_vars[f"--tw-{cm.group(1)}"] = cm.group(2)
+                tailwind_config = "tailwind"
+
+        # 颜色频率统计
+        for raw in _COLOR_RE.finditer(text):
+            col = raw.group(0).strip()
+            try:
+                hexc = normalize_to_hex(col)
+                hexc_lower = hexc.lower()
+                if hexc_lower not in _AUDIT_IGNORE_COLORS:
+                    color_freq[hexc_lower] = color_freq.get(hexc_lower, 0) + 1
+            except ValueError:
+                pass
+
+        # 字体检测
+        if suffix in {".css", ".scss", ".less", ".html", ".jsx", ".tsx", ".vue"}:
+            for m in re.finditer(r'font-family\s*:\s*["\']?([^;"\'}{]+)["\']?', text):
+                for fam in m.group(1).split(","):
+                    fam = fam.strip().strip("'\"").strip()
+                    if fam and fam.lower() not in ("inherit", "initial", "unset", "serif", "sans-serif", "monospace"):
+                        fonts_found.add(fam)
+
+    # ── 推断主色 ──
+    # 频率最高的颜色 > --color-primary 的值 > --primary 的值
+    inferred_primary = ""
+    inferred_secondary = ""
+    inferred_bg = ""
+    inferred_text = ""
+    inferred_font = ""
+
+    # 优先从 CSS 变量名推断
+    for var_name, var_val in css_vars.items():
+        vn = var_name.lower()
+        try:
+            hexv = normalize_to_hex(var_val)
+        except ValueError:
+            continue
+        if any(k in vn for k in ("primary", "brand", "main")):
+            inferred_primary = hexv
+        elif any(k in vn for k in ("secondary", "accent")):
+            inferred_secondary = hexv
+        elif any(k in vn for k in ("bg", "background", "surface")):
+            inferred_bg = hexv
+        elif any(k in vn for k in ("text", "fg", "foreground")):
+            inferred_text = hexv
+
+    # 从频率推断（取 top-3 作为候补）
+    sorted_colors = sorted(color_freq.items(), key=lambda x: -x[1])
+    if sorted_colors and not inferred_primary:
+        inferred_primary = sorted_colors[0][0]
+    if len(sorted_colors) > 1 and not inferred_secondary:
+        inferred_secondary = sorted_colors[1][0]
+    if len(sorted_colors) > 2 and not inferred_bg:
+        # 取最高频的浅色作为背景
+        for c, _ in sorted_colors:
+            if not is_dark_bg(c):
+                inferred_bg = c
+                break
+    if not inferred_bg:
+        inferred_bg = "#FFFFFF"
+
+    # 字体推断
+    if fonts_found:
+        inferred_font = ", ".join(sorted(fonts_found, key=lambda x: -len(x))[:3])
+
+    # ── 生成 DESIGN.md ──
+    # 用自动推导的参数调用主生成逻辑
+    import argparse
+    import types
+
+    local_args = types.SimpleNamespace(
+        name=src.name or "Imported Project",
+        description=f"从 {src.name} 自动推导的设计规范",
+        template="",
+        theme="auto",
+        primary=inferred_primary,
+        secondary=inferred_secondary,
+        background=inferred_bg,
+        text=inferred_text or "",
+        font=inferred_font,
+        tone="",
+        version="alpha",
+        output=output or f"{src.name}_DESIGN.md",
+        accent_colors=[c for c, _ in sorted_colors[3:8]],
+        spacing_base=4,
+        timestamp=False,
+        visualize=False,
+        export=[],
+    )
+
+    print(f"  主色: {inferred_primary or '未推断'}")
+    print(f"  辅助色: {inferred_secondary or '未推断'}")
+    print(f"  背景色: {inferred_bg}")
+    print(f"  字体: {inferred_font or '未推断'}")
+    print(f"  置信度: 主色={'HIGH' if inferred_primary else 'N/A'}, "
+          f"辅助色={'MEDIUM' if inferred_secondary else 'N/A'}, "
+          f"背景色={'HIGH' if inferred_bg else 'N/A'}")
+    print(f"  扫描到 CSS 变量: {len(css_vars)} 个, 颜色样本: {len(color_freq)} 个, 字体: {len(fonts_found)} 个")
+
+    try:
+        frontmatter, theme = generate_yaml_frontmatter(local_args)
+    except ValidationError as e:
+        print(f"错误：推导失败 — {e}")
+        return 1
+
+    body = generate_markdown_body(local_args, theme)
+    content = frontmatter + "\n" + body
+    safe_write(local_args.output, content)
+    print(f"\n✅ 已生成: {local_args.output}")
+    print(f"📝 提示：请检查自动推导的颜色（主色={inferred_primary}），"
+          f"可运行 --modify 或重新生成时指定 --primary 修正")
+    return 0
+
+
+def run_audit(design_path: str, source_dir: str) -> int:
+    """审计项目源码中的颜色是否偏离 DESIGN.md 规范。
+
+    返回违规颜色数量作为退出码。
+    参考：no7z/design-pact 的 check 命令设计思路。
+    """
+    allowed, keys = _collect_design_md_colors(design_path)
+    if not allowed:
+        print("  无法提取 DESIGN.md 的颜色令牌，跳过审计")
+        return 0
+
+    print(f"📋 DESIGN.md 颜色令牌: {len(allowed)} 个 ({', '.join(sorted(keys)[:8])}{'...' if len(keys) > 8 else ''})")
+
+    violations = []  # (file, line_num, color, context)
+    scanned_files = 0
+
+    src = Path(source_dir).resolve()
+    design_path_resolved = Path(design_path).resolve()
+    if not src.is_dir():
+        print(f"错误：源码目录不存在 — {source_dir}")
+        return 1
+
+    for fpath in src.rglob("*"):
+        # 跳过忽略目录和隐藏目录
+        if any(part.startswith(".") and part != "." for part in fpath.parts):
+            continue
+        if any(part in _AUDIT_SKIP_DIRS for part in fpath.parts):
+            continue
+        # 跳过 DESIGN.md 文件本身
+        if fpath.resolve() == design_path_resolved:
+            continue
+        if fpath.is_file() and fpath.suffix.lower() in _AUDIT_EXTS:
+            try:
+                text = fpath.read_text(encoding="utf-8", errors="replace")
+            except (OSError, UnicodeDecodeError):
+                continue
+            colors_in_file = _extract_colors_from_text(text)
+            if not colors_in_file:
+                continue
+            scanned_files += 1
+            for color in colors_in_file:
+                if color not in allowed and color not in _AUDIT_IGNORE_COLORS:
+                    # 找具体行号
+                    rel_path = str(fpath.relative_to(src))
+                    for lineno, line in enumerate(text.splitlines(), 1):
+                        if color.rstrip(")") in line or color in line or \
+                           (color.startswith("#") and color[:7] in line):
+                            violations.append((rel_path, lineno, color, line.strip()[:80]))
+                            break
+                    else:
+                        violations.append((rel_path, 0, color, ""))
+
+    # 输出报告
+    print(f"🔍 扫描了 {scanned_files} 个源文件")
+    if not violations:
+        print("✅ 全部颜色字面量均符合 DESIGN.md 规范")
+        return 0
+
+    prefix = str(src)
+    print(f"⚠️  发现 {len(violations)} 个颜色偏离:\n")
+    for fpath, lineno, color, context in violations:
+        loc = f"{fpath}:{lineno}" if lineno else fpath
+        ctx = f"  // {context}" if context else ""
+        print(f"  📄 {loc}{ctx}")
+        print(f"    违规颜色: {color}")
+        print(f"    预期范围: {', '.join(sorted(allowed)[:5])}{'...' if len(allowed) > 5 else ''}")
+        print()
+
+    return len(violations)
 
 
 def _run_import(import_path: str, output: str) -> int:
@@ -1638,7 +2292,13 @@ def _run_import(import_path: str, output: str) -> int:
                     indent, key, val = mm.group(1), mm.group(2), mm.group(3)
                     if val:
                         try:
-                            new_lines.append(f'{indent}{key}: "{normalize_to_hex(val)}"')
+                            normed = normalize_to_hex(val)
+                            # 置信度评分（参考 DesignTokenX 的 confidence 标注）：
+                            # 导入的原始颜色 = HIGH，派生/推断色 = MEDIUM
+                            confidence = "HIGH"
+                            if any(sfx in key for sfx in ("-hover", "-active", "-light", "-dark", "disabled", "secondary", "border", "divider")):
+                                confidence = "MEDIUM"
+                            new_lines.append(f'{indent}{key}: "{normed}"  # confidence: {confidence}')
                             continue
                         except ValueError:
                             WARNINGS.add(f"[import] 颜色 {key}={val} 无法归一化，已保留原值")
@@ -1738,6 +2398,48 @@ def main() -> int:
                 print(f"错误：文件不存在 — {fp}")
                 return 1
         return run_diff(f1, f2)
+
+    if args.audit:
+        design_path, src_dir = args.audit
+        if not os.path.exists(design_path):
+            print(f"错误：DESIGN.md 文件不存在 — {design_path}")
+            return 1
+        if not os.path.isdir(src_dir):
+            print(f"错误：源码目录不存在 — {src_dir}")
+            return 1
+        rc = run_audit(design_path, src_dir)
+        if rc > 0:
+            print(f"💡 提示：违规颜色可能是 DESIGN.md 缺失的令牌，或被忽略的第三方库颜色")
+        return 0 if rc == 0 else 1
+
+    if args.import_local:
+        rc = _run_import_local(args.import_local, args.output)
+        return 0 if rc == 0 else 1
+
+    # Master + Page 分层（参考 nextlevelbuilder/ui-ux-pro-max-skill 的 Master+Overrides 模式）
+    if args.master:
+        master_path = args.master
+        if not os.path.exists(master_path):
+            print(f"错误：Master 文件不存在 — {master_path}")
+            return 1
+        page_name = args.page or "default"
+        # 将 --set 传入 modify，覆盖 master DESIGN.md 中的颜色
+        overwrites = _parse_overwrites(args.set)
+        # 如果用户没显式 --set，自动添加 page-specific name
+        if "name" not in overwrites and page_name != "default":
+            overwrites["name"] = f"{Path(master_path).stem} - {page_name}"
+        output_name = f"{Path(master_path).stem}_{page_name}.md"
+        output_path = resolve_output_path(args.output or output_name)
+        try:
+            modify_design_md(master_path, overwrites, output_path, args.spacing_base or 4)
+            print(f"   Master: {master_path}")
+            print(f"   Page:   {page_name}")
+            print(f"   覆盖:   {overwrites}")
+            print(f"✅ 已生成页面级 DESIGN.md: {output_path}")
+            return 0
+        except (ValidationError, ValueError) as e:
+            print(f"错误：{e}")
+            return 1
 
     # 反向工程模式：生成 DESIGN.md 后可接续 --export / --visualize
     analysis_done = False
