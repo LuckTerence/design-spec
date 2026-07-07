@@ -19,6 +19,9 @@ page_design_tokens.png
 .pytest_cache/
 htmlcov/
 
+# Skill package build output (regenerate via package_skill.py)
+dist/
+
 # Internal/project-only directories
 dev/
 .workbuddy/
