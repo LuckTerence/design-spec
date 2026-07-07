@@ -14,6 +14,11 @@ __pycache__/
 page_design_tokens.png
 *_screenshot.png
 
+# Test / coverage artifacts
+.coverage
+.pytest_cache/
+htmlcov/
+
 # Internal/project-only directories
 dev/
 .workbuddy/

@@ -1,0 +1,7 @@
+# design-spec 运行时依赖（固定版本，确保可复现安装）
+# 版本于 2026-07-07 从测试虚拟环境导出
+# Python 要求：>=3.8
+# 注：颜色科学与取色已委托 coloraide / colorthief，移除了 numpy / scikit-learn 重依赖
+coloraide==8.10.0
+pillow==12.3.0
+colorthief==0.2.1
